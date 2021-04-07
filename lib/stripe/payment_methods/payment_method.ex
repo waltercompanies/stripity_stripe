@@ -22,7 +22,8 @@ defmodule Stripe.PaymentMethod do
           customer: Stripe.id() | Stripe.Customer.t() | nil,
           livemode: boolean,
           metadata: Stripe.Types.metadata(),
-          type: String.t()
+          type: String.t(),
+          sepa_debit: map() | nil
         }
 
   defstruct [
@@ -34,7 +35,8 @@ defmodule Stripe.PaymentMethod do
     :customer,
     :livemode,
     :metadata,
-    :type
+    :type,
+    :sepa_debit
   ]
 
   defp plural_endpoint() do
