@@ -154,6 +154,8 @@ defmodule Stripe.Subscription do
                optional(:days_until_due) => non_neg_integer,
                optional(:items) => [
                  %{
+                   :id => Stripe.id() | String.t(),
+                   :price => Stripe.id() | String.t(),
                    :plan => Stripe.id() | Stripe.Plan.t(),
                    optional(:quantity) => non_neg_integer
                  }
@@ -161,6 +163,7 @@ defmodule Stripe.Subscription do
                optional(:metadata) => Stripe.Types.metadata(),
                optional(:prorate) => boolean,
                optional(:proration_date) => Stripe.timestamp(),
+               optional(:proration_behavior) => String.t(),
                optional(:tax_percent) => float,
                optional(:trial_end) => Stripe.timestamp(),
                optional(:trial_from_plan) => boolean
