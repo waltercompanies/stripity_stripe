@@ -11,7 +11,8 @@ defmodule Stripe.WebhookTest do
   @secret "secret"
 
   defp generate_signature(timestamp, payload, secret \\ @secret) do
-    :crypto.hmac(:sha256, secret, "#{timestamp}.#{payload}")
+    :hmac
+    |> crypto.mac(:sha256, secret, "#{timestamp}.#{payload}")
     |> Base.encode16(case: :lower)
   end
 

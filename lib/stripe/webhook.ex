@@ -116,7 +116,8 @@ defmodule Stripe.Webhook do
   end
 
   defp compute_signature(payload, secret) do
-    :crypto.hmac(:sha256, secret, payload)
+    :hmac
+    |> :crypto.mac(:sha256, secret, payload)
     |> Base.encode16(case: :lower)
   end
 
