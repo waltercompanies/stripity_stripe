@@ -58,6 +58,7 @@ defmodule Stripe.Invoice do
           hosted_invoice_url: String.t() | nil,
           invoice_pdf: String.t() | nil,
           last_finalization_error: map,
+          latest_revision: String.t() | nil,
           lines: Stripe.List.t(Stripe.LineItem.t()),
           livemode: boolean,
           metadata: Stripe.Types.metadata() | nil,
@@ -160,6 +161,7 @@ defmodule Stripe.Invoice do
     :hosted_invoice_url,
     :invoice_pdf,
     :last_finalization_error,
+    :latest_revision,
     :lines,
     :livemode,
     :metadata,
@@ -297,7 +299,10 @@ defmodule Stripe.Invoice do
   @spec upcoming(map, Stripe.options()) :: {:ok, t} | {:error, Stripe.Error.t()}
   def upcoming(params, opts \\ [])
   def upcoming(params = %{customer: _customer}, opts), do: get_upcoming(params, opts)
-  def upcoming(params = %{customer_details: _customer_details}, opts), do: get_upcoming(params, opts)
+
+  def upcoming(params = %{customer_details: _customer_details}, opts),
+    do: get_upcoming(params, opts)
+
   def upcoming(params = %{subscription: _subscription}, opts), do: get_upcoming(params, opts)
 
   defp get_upcoming(params, opts) do
