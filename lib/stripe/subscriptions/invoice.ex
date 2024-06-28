@@ -243,16 +243,12 @@ defmodule Stripe.Invoice do
                }
                | %{}
   def create(params, opts \\ []) do
-    IO.inspect(params, label: "params")
-    IO.inspect(params.rendering, label: "rendering params")
-
     new_request(opts)
     |> put_endpoint(@plural_endpoint)
     |> put_params(params)
     |> put_method(:post)
     |> cast_to_id([:subscription])
     |> make_request()
-    |> IO.inspect(label: "stripe request")
   end
 
   @doc """
