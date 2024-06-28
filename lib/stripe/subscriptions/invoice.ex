@@ -74,6 +74,8 @@ defmodule Stripe.Invoice do
           post_payment_credit_notes_amount: integer,
           pre_payment_credit_notes_amount: integer,
           receipt_number: String.t() | nil,
+          rendering: term | nil,
+          rendering_options: term | nil,
           starting_balance: integer,
           statement_descriptor: String.t() | nil,
           status: String.t() | nil,
@@ -120,6 +122,17 @@ defmodule Stripe.Invoice do
             paid_at: Stripe.timestamp() | nil,
             voided_at: Stripe.timestamp() | nil
           })
+
+  @type pdf :: %{optional(:page_size) => :a4 | :auto | :letter}
+
+  @type rendering :: %{
+          optional(:amount_tax_display) => :exclude_tax | :include_inclusive_tax,
+          optional(:pdf) => pdf
+        }
+
+  @type rendering_options :: %{
+          optional(:amount_tax_display) => :exclude_tax | :include_inclusive_tax
+        }
 
   defstruct [
     :id,
@@ -178,6 +191,8 @@ defmodule Stripe.Invoice do
     :post_payment_credit_notes_amount,
     :pre_payment_credit_notes_amount,
     :receipt_number,
+    :rendering,
+    :rendering_options,
     :starting_balance,
     :statement_descriptor,
     :status,
@@ -228,12 +243,16 @@ defmodule Stripe.Invoice do
                }
                | %{}
   def create(params, opts \\ []) do
+    IO.inspect(params, label: "params")
+    IO.inspect(params.rendering, label: "rendering params")
+
     new_request(opts)
     |> put_endpoint(@plural_endpoint)
     |> put_params(params)
     |> put_method(:post)
     |> cast_to_id([:subscription])
     |> make_request()
+    |> IO.inspect(label: "stripe request")
   end
 
   @doc """
